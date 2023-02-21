@@ -339,3 +339,62 @@ for every edge (u,v)
 
 ## kosaraju algorithm
 
+```
+function Kosaraju(G)
+    stack S // empty stack
+    visited = [false, ..., false] // array of booleans, initially false for each vertex
+    for each vertex v in G do
+        if not visited[v] then
+            DFS1(G, v, visited, S) // populate the stack with the order of finishing times
+        end if
+    end for
+
+    transposeG = Transpose(G) // generate the transpose of the graph
+
+    visited = [false, ..., false] // reset visited array
+
+    components = [] // empty array of components
+
+    while not S.isEmpty() do
+        v = S.pop() // get the next vertex in the order of finishing times
+        if not visited[v] then
+            component = [] // empty array for the new strongly connected component
+            DFS2(transposeG, v, visited, component) // traverse the transpose from v to get the component
+            components.append(component) // add the component to the list of components
+        end if
+    end while
+
+    return components
+end 
+
+function DFS1(G, v, visited, S)
+    visited[v] = true
+    for each vertex u adjacent to v do
+        if not visited[u] then
+            DFS1(G, u, visited, S)
+        end if
+    end for
+    S.push(v) // add v to the stack after visiting all of its neighbors
+end 
+
+function DFS2(G, v, visited, component)
+    visited[v] = true
+    component.append(v) // add v to the current component
+    for each vertex u adjacent to v in G do
+        if not visited[u] then
+            DFS2(G, u, visited, component)
+        end if
+    end for
+end 
+
+function Transpose(G)
+    transposeG = [] // empty graph
+    for each vertex v in G do
+        transposeG.addVertex(v) // add v to the transpose graph
+    end for
+    for each edge (u, v) in G do
+        transposeG.addEdge(v, u) // reverse the direction of the edge in the transpose graph
+    end for
+    return transposeG
+end 
+```
