@@ -398,3 +398,171 @@ function Transpose(G)
     return transposeG
 end 
 ```
+
+## n-Queen Problem
+
+- code
+```
+x[j] = column of j'th queen
+k = k'th queen or row number for k'th queen
+i = column number for k'th queen
+place(k,i)
+    for j=1 to k-1
+        if(x[j] == i or abs(j-k) == abs(x[j]-i))
+            return false
+    return false
+
+k = k'th queen
+n = size of board n*n
+nQueen(k,n)
+    for i=1 to n
+        if(place(k,i))
+            if(k==n)
+                print(x)
+            else
+                nQueen(k+1,n)
+
+```
+
+## graph coloring
+
+- code (decision problem)
+```
+m = max color
+x = solution vector
+x[i] = color of i'th vertex
+
+nextValue(k)
+    while(true)
+        x[k] = (x[k]+1)%(m+1)
+        if(x[k]==0)
+            return
+        for j=1 to n
+            if(G[k][j] != 0 and x[k] == x[j])
+                break
+        if(j==n+1)
+            return
+
+
+mColoring(k)
+    while(true)
+        nextValue(k)
+        if(x[k] == 0)
+            return
+        if(k==n)
+            print(x)
+        else
+            mColoring(k+1)
+```
+
+## Hamiltonian Cycle
+
+- code
+```
+nextValue(k)
+    while(true)
+        x[k] = (x[k]+1)%(n+1)
+        if(x[k]==0)
+            return
+        if(G[x[k-1]][x[k]] == 1)
+            for j=1 to k-1
+                if(x[k] == x[j])
+                    break
+            if(j==k)
+                if(k<n or (k==n and G[x[k]][1] == 1))
+                    return
+
+
+HC(k)
+    while(true)
+        nextValue(k)
+        if(x[k] == 0)
+            return
+        if(k==n)
+            print(x)
+        else
+            HC(k+1)
+```
+
+## Sum of subset
+- code
+```
+w = list of values in increasing order
+m = required sum
+x = solution vector x[i] = 1 then w[i] is taken
+conditions:
+    sum till now + remaining sum >= m
+    sum till now + next value <=m
+
+sos(s,k,r)
+    x[k] = 1
+    if(s+w[k] == m)
+        print(x)
+    else if (s+w[k] + w[k+1] <=m)
+        sos(s+w[k],k+1,r-w[k])
+    
+    if(s+r-w[k] >=m and s+w[k] <=m)
+        x[k]=0
+        sos(s,k+1,r-w[k])
+
+```
+
+## job Assignment 
+- least cost branch and bound
+- 2 ways 1. person to job 2. job to person
+- LB => fix the selected jobs and compute sum of minimum cost of all person
+
+## 8 puzzle problem
+- there can be 4 moves
+    1. left
+    2. right
+    3. up
+    4. down
+- total 9! arrangements possible
+- least cost branch and bound
+- LB = f(x) + g(x)
+- f(x) = length of root to x in stack space tree
+- g(x) = number of non-blank tile which are not in correct place
+
+### for finding whether solution is possible or not
+
+```
+9 = blank node
+less(i) = number of tiles such that j<i and position[j] > position[i]
+x = if blank node is at * node than 1 otherwise 0
+- * -
+* - *
+- * -
+
+isPossible()
+    for i=1 to 9
+        if sum of less(i) + x is even
+            return true
+    return false
+```
+
+## TSP
+- brute force required (n-1)!
+- steps
+```
+   for node 1
+1. get minimum node from all rows
+2. do row reduction by subtract minimum node from all node in row 
+3. find row cost by adding all minimum value
+4. get minimum node from all columns
+5. do column reduction by subtract minimum node from all node in column 
+6. find column cost by adding all minimum value
+7. add both row cost and column cost this will be lower bound
+8. it will create one reduced matrix 
+9. for children node of 1
+10. LB at 2 = LB at parent + cost of visiting node 2 from 1 in reduced matrix + r (cost of reduction)
+11. mark i'th column as infinity and i-1 th row as infinity and (i,i-1) node infinity
+12. do reduction again if every node has 0 and every column has 0 then there is no reduction so r=0 otherwise r = min value to be reduced
+```
+
+## 0/1 knapsack
+- maximization problem
+- find upper bound
+- item are sorted in ascending order by P/W ratio
+- UB = total profit of that node + (c- total weight of that node) * ratio of next item (next highest value)
+- if UB < ans then kill node
