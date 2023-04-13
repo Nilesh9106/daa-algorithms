@@ -1,17 +1,33 @@
-1. [fibonacci series](#fibonacci-series)
-2. [bionomial](#binomial-coefficient)
-3. [0/1 Knapsack](#0-1-KnapSack)
-4. [making change](#making-change)
-5. [matrix chain order](#matrix-chain-problem)
-6. [largest common subsequence](#lcs)
-7. [string edit problem](#string-edit-distance)
-8. [assembly line schedule (multi stage graph)](#assembly-line-schedule-multi-stage-graph)
-9. [maximum continuous sub array](#max-sub-array)
-10. [bellman ford](#bellman-ford)
-11. [floyed warshell algorithm](#floyed-warshell)
-12. [tarjans algo](#tarjans-algorithm)
-13. [kosaraju algo](#kosaraju-algorithm)
+1. [Dynamic Programming algorithms](#dynamic-programming-algorithm)
+    1. [fibonacci series](#fibonacci-series)
+    2. [bionomial](#binomial-coefficient)
+    3. [0/1 Knapsack](#0-1-KnapSack)
+    4. [making change](#making-change)
+    5. [matrix chain order](#matrix-chain-problem)
+    6. [largest common subsequence](#lcs)
+    7. [string edit problem](#string-edit-distance)
+    8. [assembly line schedule (multi stage graph)](#assembly-line-schedule-multi-stage-graph)
+    9. [maximum continuous sub array](#max-sub-array)
 
+2. [Graph Algorithms](#graph-algorithms)
+    1. [bellman ford](#bellman-ford)
+    2. [floyed warshell algorithm](#floyed-warshell)
+    3. [tarjans algo](#tarjans-algorithm)
+    4. [kosaraju algo](#kosaraju-algorithm)
+
+3. [Backtracking Algorithms](#backtracking-algorithms)
+    1. [N-Queen Problem](#n-queen-problem)
+    2. [Graph Coloring](#graph-coloring)
+    3. [Hamiltonian Cycle](#hamiltonian-cycle)
+    4. [sum of subset (backtracking)](#sum-of-subset)
+4. [Branch and Bound algorithms](#branch-and-bound-algorithms)
+    1. [job Assignment](#job-assignment)
+    2. [8 puzzle problem](#8-puzzle-problem)
+    3. [Traveling Salesman Problem](#tsp)
+    4. [0/1 knapsack using branch and bound](#01-knapsack)
+
+---
+# Dynamic programming Algorithm
 
 ## fibonacci series
 
@@ -89,7 +105,7 @@ for(i=1 to n)
             if(i==1)
                 dp[i][j]=-1
             else
-                dp[i][j]=sp[i-1][j]
+                dp[i][j]=dp[i-1][j]
         else
             if(i==1)
                 dp[i][j] = 1+dp[i][j-coins[i]]
@@ -269,6 +285,8 @@ for(i=1 to n-1)
 return maxi
 ```
 
+# Graph Algorithms
+
 ## bellman ford
 
 - algorithm
@@ -399,7 +417,9 @@ function Transpose(G)
 end 
 ```
 
-## n-Queen Problem
+# Backtracking Algorithms
+
+## n-queen problem
 
 - code
 ```
@@ -410,7 +430,7 @@ place(k,i)
     for j=1 to k-1
         if(x[j] == i or abs(j-k) == abs(x[j]-i))
             return false
-    return false
+    return true
 
 k = k'th queen
 n = size of board n*n
@@ -501,11 +521,13 @@ sos(s,k,r)
     else if (s+w[k] + w[k+1] <=m)
         sos(s+w[k],k+1,r-w[k])
     
-    if(s+r-w[k] >=m and s+w[k] <=m)
+    if(s+r-w[k] >=m and s+w[k+1] <=m)
         x[k]=0
         sos(s,k+1,r-w[k])
 
 ```
+
+# Branch and bound algorithms
 
 ## job Assignment 
 - least cost branch and bound
@@ -535,9 +557,8 @@ x = if blank node is at * node than 1 otherwise 0
 - * -
 
 isPossible()
-    for i=1 to 9
-        if sum of less(i) + x is even
-            return true
+    if sum of less(i) + x is even
+        return true
     return false
 ```
 
